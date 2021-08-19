@@ -54,5 +54,38 @@ namespace AppMongoDB.Controllers
             return new { Status = $"Person with ID {id} dose not exists" };
         }
 
+        [HttpGet]
+        [Route("api/People/GetAllFirstNames")]
+        public IList<string> GatAllFirstNames()
+        {
+            var namesList = new List<string>();
+
+            if (MoqDataStore.People.Any())
+            {
+                foreach (var person in MoqDataStore.People)
+                {
+                    namesList.Add(person.FirstName);
+                }
+            }
+
+            return namesList;
+        }
+
+        [HttpPost]
+        [Route("api/People/GetAllLastNames")]
+        public IList<string> GatAllLastNames()
+        {
+            var namesList = new List<string>();
+
+            if (MoqDataStore.People.Any())
+            {
+                foreach (var person in MoqDataStore.People)
+                {
+                    namesList.Add(person.LastName);
+                }
+            }
+
+            return namesList;
+        }
     }
 }
