@@ -6,7 +6,7 @@ using AppMongoDB.Models;
 
 namespace AppMongoDB.Data
 {
-    public static class MoqDataStore
+    public class MoqDataStore
     {
         public static IList<Person> People = GeneratePersons();
         //public static IList<Person> People = new List<Person>();
@@ -24,12 +24,16 @@ namespace AppMongoDB.Data
                 "Adam Słodowy"
             };
 
+            var ageRandom = new int[] { 20, 25, 30 };
+            var random = new Random();
+
             var people = new List<Person>();
             Person person = null;
 
             for (int i = 0; i < personArray.Length; i++)
             {
                 var personNames = personArray[i].Split(' ');
+                var randIndex = random.Next(0, ageRandom.Length);
 
                 if (personNames.Length == 2)
                 {
@@ -37,8 +41,8 @@ namespace AppMongoDB.Data
                     {
                         Id = i + 1,
                         FirstName = personNames[0],
-                        LastName = personNames[1]
-
+                        LastName = personNames[1],
+                        Age = ageRandom[randIndex]
                     };
                 }
 

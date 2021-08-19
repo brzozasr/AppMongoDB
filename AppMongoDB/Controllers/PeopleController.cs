@@ -87,5 +87,20 @@ namespace AppMongoDB.Controllers
 
             return namesList;
         }
+
+        [HttpGet]
+        [Route("api/People/GetAge/{age:int}")]
+        public IList<Person> GatAge(int age)
+        {
+            var ageList = new List<Person>();
+
+            if (MoqDataStore.People.Any())
+            {
+                var people = MoqDataStore.People.Where(x => x.Age == age);
+                ageList.AddRange(people);
+            }
+
+            return ageList;
+        }
     }
 }
