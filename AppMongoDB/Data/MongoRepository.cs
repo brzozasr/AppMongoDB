@@ -7,7 +7,7 @@ namespace AppMongoDB.Data
 {
     public class MongoRepository : IMongoRepository
     { 
-        IList<object> IMongoRepository.GetData()
+        IList<Car> IMongoRepository.GetData()
         {
             throw new NotImplementedException();
         }

@@ -6,6 +6,7 @@ using System.Web.WebSockets;
 using AppMongoDB.Data;
 using AppMongoDB.DI;
 using Microsoft.Extensions.DependencyInjection;
+using Unity;
 
 namespace AppMongoDB
 {
@@ -14,12 +15,14 @@ namespace AppMongoDB
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            var services = new ServiceCollection();
-            var provider = services.AddTransientServiceCollection<IMongoRepository, MongoRepository>();
+            var container = new UnityContainer();
 
-            var resolver = new DependencyInjection(provider);
-            config.DependencyResolver = resolver;
-            
+            // Web API registration dependency injection
+            container.RegisterType<IMongoRepository, MoqMongoRepository>();
+
+
+            config.DependencyResolver = new UnityResolver(container);
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

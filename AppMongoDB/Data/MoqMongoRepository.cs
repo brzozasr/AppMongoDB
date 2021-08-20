@@ -7,30 +7,27 @@ namespace AppMongoDB.Data
 {
     public class MoqMongoRepository : IMongoRepository
     {
-        public IList<object> MoqData { get; private set; } = new List<object>();
+        public IList<Car> MoqData { get; } = new List<Car>();
 
         public MoqMongoRepository()
         {
-            MoqData.Add(new
-            {
-                ObId = 1,
-                ObName = "Object nr 1"
-            });
-            MoqData.Add(new
-            {
-                ObId = 2,
-                ObName = "Object nr 2"
-            });
-            MoqData.Add(new
-            {
-                ObId = 3,
-                ObName = "Object nr 3"
-            });
+            MoqData.Add(new Car { Brand = "Opel", Color = "Red", MaxSpeed = 120 });
+            MoqData.Add(new Car { Brand = "Fiat", Color = "Blue", MaxSpeed = 140 });
+            MoqData.Add(new Car { Brand = "Honda", Color = "White", MaxSpeed = 160 });
         }
 
-        public IList<object> GetData()
+        public IList<Car> GetData()
         {
             return MoqData;
         }
+    }
+
+    public class Car
+    {
+        public string Brand { get; set; }
+
+        public string Color { get; set; }
+
+        public int MaxSpeed { get; set; }
     }
 }

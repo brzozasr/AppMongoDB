@@ -8,6 +8,6 @@ namespace AppMongoDB.Data
 {
     public interface IMongoRepository
     {
-        IList<object> GetData();
+        IList<Car> GetData();
     }
 }
