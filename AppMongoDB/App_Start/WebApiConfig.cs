@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using System.Web.WebSockets;
+﻿using System.Web.Http;
 using AppMongoDB.Data;
 using AppMongoDB.DI;
-using Microsoft.Extensions.DependencyInjection;
+using AppMongoDB.Models.Movie;
 using Unity;
 
 namespace AppMongoDB
@@ -18,9 +14,9 @@ namespace AppMongoDB
             var container = new UnityContainer();
 
             // Web API registration dependency injection
-            container.RegisterType<IMongoRepository, MoqMongoRepository>();
+            container.RegisterType<IMongoRepository<Movie>, MoqMongoRepository>();
 
-
+            //
             config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes
