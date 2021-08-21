@@ -4,17 +4,19 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using AppMongoDB.Data;
 using AppMongoDB.Models.Movie;
-using Microsoft.AspNetCore.Mvc;
+using AppMongoDB.MongoContext;
 
 namespace AppMongoDB.Controllers
 {
     public class MongoController : ApiController
     {
         private readonly IMongoRepository<Movie> _mongoRepository;
+        private IMongoDbConnectionString _connectionString;
 
-        public MongoController(IMongoRepository<Movie> mongoRepository)
+        public MongoController(IMongoRepository<Movie> mongoRepository, IMongoDbConnectionString connectionString)
         {
             _mongoRepository = mongoRepository;
+            _connectionString = connectionString;
         }
 
         // GET api/<controller>
@@ -29,14 +31,14 @@ namespace AppMongoDB.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return null;
+                return null; ;
             }
         }
 
         // GET api/<controller>/5
         public string Get(int id)
         {
-            return "value";
+            return _connectionString.GetMongoDbConnectionString()["MongoDBConnectionStrings:DefaultConnection"];
         }
 
         // POST api/<controller>
