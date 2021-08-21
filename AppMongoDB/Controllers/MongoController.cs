@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Mvc;
 using AppMongoDB.Data;
 using AppMongoDB.Models.Movie;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AppMongoDB.Controllers
 {
@@ -21,9 +18,19 @@ namespace AppMongoDB.Controllers
         }
 
         // GET api/<controller>
-        public async Task<IHttpActionResult> Get()
+        public async Task<IEnumerable<Movie>> Get()
         {
-            return Ok(_mongoRepository.GetAllData());
+            try
+            {
+                var result = Task.Run(() => _mongoRepository.GetAllData());
+                await Task.CompletedTask;
+                return result.Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
 
         // GET api/<controller>/5
