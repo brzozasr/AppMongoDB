@@ -30,14 +30,28 @@ namespace AppMongoDB.Data
             //return new List<Movie> {new Movie {MovieId = ObjectId.GenerateNewId()}};
         }
 
-        public Task<Movie> GetById(long id)
+        public async Task<Movie> GetByObjectId(string objId)
         {
-            throw new NotImplementedException();
+            if (ObjectId.TryParse(objId, out var objectId))
+            {
+                return await (await _movieCollection.FindAsync(x => x.MovieId == objectId)).FirstOrDefaultAsync();
+            }
+
+            return null;
         }
 
-        public Task<Movie> GetByValue<T2>(string fieldName, T2 fieldValue)
+        public async Task<Movie> GetOneByValue(string fieldName, dynamic fieldValue)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(fieldName) && fieldValue)
+            {
+                //var filter = new BsonDocument { { fieldName, fieldValue } };
+                //return await (await _movieCollection.FindAsync(filter)).FirstOrDefaultAsync();
+                var builder = Builders<Movie>.Filter;
+                var query = builder.Eq(fieldName, fieldValue);
+                return await (await _movieCollection.FindAsync<Movie>(query)).FirstOrDefaultAsync();
+            }
+
+            return null;
         }
 
         public Task<bool> DeleteById(long id)

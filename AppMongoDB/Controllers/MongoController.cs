@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AppMongoDB.Data;
 using AppMongoDB.Models.Movie;
 using AppMongoDB.MongoDbContext;
+using MongoDB.Bson;
 using Unity;
 
 namespace AppMongoDB.Controllers
@@ -24,22 +26,47 @@ namespace AppMongoDB.Controllers
         // GET api/<controller>
         public async Task<IEnumerable<Movie>> Get()
         {
-            //try
-            //{
+            try
+            {
                 var movieCollection = await _mongoRepository.GetAllData();
-                return movieCollection.Where(x => x.Year.GetType().ToString() != "System.Int32");
-            //}
-            //catch (Exception e)
-            //{
-                //Console.WriteLine(e.Message);
-                //return null; ;
-            //}
+                return movieCollection;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [HttpGet]
+        [Route("api/Mongo/GetByObjectId/{objId}")]
+        public async Task<Movie> GetById(string objId)
         {
-            return _appSettingsJsonValue.GetAppSettingsJsonValue("MongoDBConnectionStrings:DefaultConnection");
+            try
+            {
+                var movie = await _mongoRepository.GetByObjectId(objId);
+                return movie;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("api/Mongo/GetOneByValue/{fieldName}/{fieldValue}")]
+        public async Task<Movie> GetOneByValue(string fieldName, dynamic fieldValue)
+        {
+            try
+            {
+                var movie = await _mongoRepository.GetOneByValue(fieldName, fieldValue);
+                return movie;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+
         }
 
         // POST api/<controller>

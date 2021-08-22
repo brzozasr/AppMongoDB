@@ -82,12 +82,12 @@ namespace AppMongoDB.Data
             return task.Result;
         }
 
-        public Task<Movie> GetById(long id)
+        public Task<Movie> GetByObjectId(string objId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Movie> GetByValue<T2>(string fieldName, T2 fieldValue)
+        public Task<Movie> GetOneByValue(string fieldName, dynamic fieldValue)
         {
             throw new NotImplementedException();
         }
