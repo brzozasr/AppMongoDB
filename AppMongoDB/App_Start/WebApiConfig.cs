@@ -16,7 +16,7 @@ namespace AppMongoDB
 
             // Web API registration dependency injection
             container.RegisterSingleton<IMongoDbConnectionString, MongoDbConnectionString>();
-            container.RegisterType<IMongoDbClient, MongoDbClient>();
+            container.RegisterSingleton<IMongoDbClient, MongoDbClient>();
             container.RegisterType<IMongoRepository<Movie>, MoqMongoRepository>();
 
             //
