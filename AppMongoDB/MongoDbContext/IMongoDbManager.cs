@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
 
-namespace AppMongoDB.MongoContext
+namespace AppMongoDB.MongoDbContext
 {
-    public interface IMongoDbClient
+    public interface IMongoDbManager
     {
         IMongoClient GetMongoDbClient();
     }

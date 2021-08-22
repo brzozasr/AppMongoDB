@@ -1,17 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using AppMongoDB.Models.Movie;
+using AppMongoDB.MongoDbContext;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Unity;
 
 namespace AppMongoDB.Data
 {
-    public class MongoRepository : IMongoRepository<Movie>
+    public class MovieMongoRepository : IMongoRepository<Movie>
     {
-        public Task<IList<Movie>> GetAllData()
+        private IMongoCollection<Movie> _movieCollection;
+
+        //public MovieMongoRepository()
+        //{
+        //}
+
+        public MovieMongoRepository(IMongoDbManager mongoDbManager)
         {
-            throw new NotImplementedException();
+            var client = mongoDbManager.GetMongoDbClient();
+            var database = client.GetDatabase("sample_mflix");
+            _movieCollection = database.GetCollection<Movie>("movies");
+        }
+
+        public async Task<IList<Movie>> GetAllData()
+        {
+            return await (await _movieCollection.FindAsync(_ => true)).ToListAsync();
+            //return new List<Movie> {new Movie {MovieId = ObjectId.GenerateNewId()}};
         }
 
         public Task<Movie> GetById(long id)

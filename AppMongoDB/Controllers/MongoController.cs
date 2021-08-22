@@ -1,44 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AppMongoDB.Data;
 using AppMongoDB.Models.Movie;
-using AppMongoDB.MongoContext;
+using AppMongoDB.MongoDbContext;
+using Unity;
 
 namespace AppMongoDB.Controllers
 {
     public class MongoController : ApiController
     {
+        private readonly IAppSettingsJsonValue _appSettingsJsonValue;
         private readonly IMongoRepository<Movie> _mongoRepository;
-        private IMongoDbConnectionString _connectionString;
 
-        public MongoController(IMongoRepository<Movie> mongoRepository, IMongoDbConnectionString connectionString)
+        public MongoController(IAppSettingsJsonValue appSettingsJsonValue, IMongoRepository<Movie> mongoRepository)
         {
+            _appSettingsJsonValue = appSettingsJsonValue;
             _mongoRepository = mongoRepository;
-            _connectionString = connectionString;
         }
 
         // GET api/<controller>
         public async Task<IEnumerable<Movie>> Get()
         {
-            try
-            {
-                var result = Task.Run(() => _mongoRepository.GetAllData());
-                await Task.CompletedTask;
-                return result.Result;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null; ;
-            }
+            //try
+            //{
+                var movieCollection = await _mongoRepository.GetAllData();
+                return movieCollection.Where(x => x.Year.GetType().ToString() != "System.Int32");
+            //}
+            //catch (Exception e)
+            //{
+                //Console.WriteLine(e.Message);
+                //return null; ;
+            //}
         }
 
         // GET api/<controller>/5
         public string Get(int id)
         {
-            return _connectionString.GetMongoDbConnectionString()["MongoDBConnectionStrings:DefaultConnection"];
+            return _appSettingsJsonValue.GetAppSettingsJsonValue("MongoDBConnectionStrings:DefaultConnection");
         }
 
         // POST api/<controller>

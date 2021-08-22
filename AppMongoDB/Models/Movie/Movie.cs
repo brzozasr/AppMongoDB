@@ -24,8 +24,9 @@ namespace AppMongoDB.Models.Movie
         [BsonElement("released")]
         public DateTime Released { get; set; }
 
+        // The type dynamic is set due to the wrong data ("Year" is int or string) in MongoDB
         [BsonElement("year")]
-        public int Year { get; set; }
+        public dynamic Year { get; set; }
 
         [BsonElement("poster")]
         public string PosterUrl { get; set; }

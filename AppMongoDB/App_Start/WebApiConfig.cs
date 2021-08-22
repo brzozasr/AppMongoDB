@@ -1,9 +1,11 @@
 ﻿using System.Web.Http;
+using AppMongoDB.Controllers;
 using AppMongoDB.Data;
 using AppMongoDB.DI;
 using AppMongoDB.Models.Movie;
-using AppMongoDB.MongoContext;
+using AppMongoDB.MongoDbContext;
 using Unity;
+using Unity.Injection;
 
 namespace AppMongoDB
 {
@@ -15,9 +17,10 @@ namespace AppMongoDB
             var container = new UnityContainer();
 
             // Web API registration dependency injection
-            container.RegisterSingleton<IMongoDbConnectionString, MongoDbConnectionString>();
-            container.RegisterSingleton<IMongoDbClient, MongoDbClient>();
-            container.RegisterType<IMongoRepository<Movie>, MoqMongoRepository>();
+            container.RegisterSingleton<MoqDataStore>();
+            container.RegisterType<IAppSettingsJsonValue, AppSettingsJsonValue>();
+            container.RegisterType<IMongoDbManager, MongoDbManager>();
+            container.RegisterType<IMongoRepository<Movie>, MovieMongoRepository>();
 
             //
             config.DependencyResolver = new UnityResolver(container);

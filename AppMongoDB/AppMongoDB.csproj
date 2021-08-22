@@ -305,7 +305,7 @@
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\IMongoRepository.cs" />
-    <Compile Include="Data\MongoRepository.cs" />
+    <Compile Include="Data\MovieMongoRepository.cs" />
     <Compile Include="Data\MoqDataStore.cs" />
     <Compile Include="Data\MoqMongoRepository.cs" />
     <Compile Include="DI\UnityResolver.cs" />
@@ -315,10 +315,10 @@
     <Compile Include="Models\Movie\Awards.cs" />
     <Compile Include="Models\Movie\Movie.cs" />
     <Compile Include="Models\Person.cs" />
-    <Compile Include="MongoContext\IMongoDbClient.cs" />
-    <Compile Include="MongoContext\IMongoDbConnectionString.cs" />
-    <Compile Include="MongoContext\MongoDbConnectionString.cs" />
-    <Compile Include="MongoContext\MongoDbClient.cs" />
+    <Compile Include="MongoDbContext\IMongoDbManager.cs" />
+    <Compile Include="MongoDbContext\IAppSettingsJsonValue.cs" />
+    <Compile Include="MongoDbContext\AppSettingsJsonValue.cs" />
+    <Compile Include="MongoDbContext\MongoDbManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

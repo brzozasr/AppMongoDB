@@ -11,7 +11,7 @@ namespace AppMongoDB.DI
 
         public UnityResolver(IUnityContainer container)
         {
-            _container = container;
+            _container = container ?? throw new ArgumentNullException("container");
         }
 
         public object GetService(Type serviceType)

@@ -1,13 +1,13 @@
 ﻿using System;
 using MongoDB.Driver;
 
-namespace AppMongoDB.MongoContext
+namespace AppMongoDB.MongoDbContext
 {
-    public class MongoDbClient : IMongoDbClient
+    public class MongoDbManager : IMongoDbManager
     {
-        private readonly MongoDbConnectionString _connectionString;
+        private readonly IAppSettingsJsonValue _connectionString;
 
-        public MongoDbClient(MongoDbConnectionString connectionString)
+        public MongoDbManager(IAppSettingsJsonValue connectionString)
         {
             _connectionString = connectionString;
         }
@@ -16,7 +16,7 @@ namespace AppMongoDB.MongoContext
         {
             try
             {
-                return new MongoClient(_connectionString.GetMongoDbConnectionString()["MongoDBConnectionStrings:DefaultConnection"]);
+                return new MongoClient(_connectionString.GetAppSettingsJsonValue("MongoDBConnectionStrings:DefaultConnection"));
             }
             catch (Exception e)
             {
