@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AppMongoDB.Data;
 using AppMongoDB.Models.Movie;
-using Microsoft.AspNetCore.Mvc;
+using AppMongoDB.MongoDbContext;
+using MongoDB.Bson;
+using Unity;
 
 namespace AppMongoDB.Controllers
 {
     public class MongoController : ApiController
     {
+        private readonly IAppSettingsJsonValue _appSettingsJsonValue;
         private readonly IMongoRepository<Movie> _mongoRepository;
 
-        public MongoController(IMongoRepository<Movie> mongoRepository)
+        public MongoController(IAppSettingsJsonValue appSettingsJsonValue, IMongoRepository<Movie> mongoRepository)
         {
+            _appSettingsJsonValue = appSettingsJsonValue;
             _mongoRepository = mongoRepository;
         }
 
@@ -22,21 +28,61 @@ namespace AppMongoDB.Controllers
         {
             try
             {
-                var result = Task.Run(() => _mongoRepository.GetAllData());
-                await Task.CompletedTask;
-                return result.Result;
+                var movieCollection = await _mongoRepository.GetAllData();
+                return movieCollection;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return null;
+                throw new ApplicationException(e.Message);
             }
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [HttpGet]
+        [Route("api/Mongo/GetByObjectId/{objId}")]
+        public async Task<Movie> GetById(string objId)
         {
-            return "value";
+            try
+            {
+                var movie = await _mongoRepository.GetByObjectId(objId);
+                return movie;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("api/Mongo/GetManyByFieldWithInt/{fieldName}/{fieldValue}")]
+        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
+        {
+            try
+            {
+                var movie = await _mongoRepository.GetManyByFieldWithInt(fieldName, fieldValue);
+                return movie;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("api/Mongo/GetManyByText/{searchedText}")]
+        public async Task<IEnumerable<Movie>> GetManyByText(string searchedText)
+        {
+            try
+            {
+                var movie = await _mongoRepository.GetManyByText(searchedText);
+                return movie;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+
         }
 
         // POST api/<controller>

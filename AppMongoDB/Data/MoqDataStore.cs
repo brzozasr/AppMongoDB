@@ -8,10 +8,15 @@ namespace AppMongoDB.Data
 {
     public class MoqDataStore
     {
-        public static IList<Person> People = GeneratePersons();
+        public IList<Person> People;
         //public static IList<Person> People = new List<Person>();
 
-        private static IList<Person> GeneratePersons()
+        public MoqDataStore()
+        {
+            People = GeneratePersons();
+        }
+
+        private IList<Person> GeneratePersons()
         {
             var personArray = new string[]
             {

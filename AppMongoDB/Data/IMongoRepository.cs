@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppMongoDB.Models.Movie;
+using MongoDB.Bson;
 
 namespace AppMongoDB.Data
 {
@@ -10,9 +12,11 @@ namespace AppMongoDB.Data
     {
         Task<IList<T>> GetAllData();
 
-        Task<T> GetById(long id);
+        Task<T> GetByObjectId(string objId);
 
-        Task<T> GetByValue<T2>(string fieldName, T2 fieldValue);
+        Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue);
+        
+        Task<IEnumerable<Movie>> GetManyByText(string searchedText);
 
         Task<bool> DeleteById(long id);
 

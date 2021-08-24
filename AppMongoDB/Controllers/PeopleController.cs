@@ -8,16 +8,23 @@ namespace AppMongoDB.Controllers
 {
     public class PeopleController : ApiController
     {
+        private readonly MoqDataStore _moqData;
+
+        public PeopleController(MoqDataStore moqData)
+        {
+            _moqData = moqData;
+        }
+
         // GET api/<controller>
         public IList<Person> Get()
         {
-            return MoqDataStore.People;
+            return _moqData.People;
         }
 
         // GET api/<controller>/5
         public Person Get(int id)
         {
-            return MoqDataStore.People.FirstOrDefault(x => x.Id == id);
+            return _moqData.People.FirstOrDefault(x => x.Id == id);
         }
 
         // POST api/<controller>
@@ -25,24 +32,24 @@ namespace AppMongoDB.Controllers
         {
             int maxId = 0;
 
-            if (MoqDataStore.People.Any())
+            if (_moqData.People.Any())
             {
-                maxId = MoqDataStore.People.Where(x => x.Id > 0).Max(x => x.Id);
+                maxId = _moqData.People.Where(x => x.Id > 0).Max(x => x.Id);
             }
 
             valuePerson.Id = maxId + 1;
-            MoqDataStore.People.Add(valuePerson);
+            _moqData.People.Add(valuePerson);
         }
 
         // DELETE api/<controller>/5
         public object Delete(int id)
         {
-            var person = MoqDataStore.People.FirstOrDefault(x => x.Id == id);
+            var person = _moqData.People.FirstOrDefault(x => x.Id == id);
 
             if (person != null)
             {
-                var index = MoqDataStore.People.IndexOf(person);
-                MoqDataStore.People.RemoveAt(index);
+                var index = _moqData.People.IndexOf(person);
+                _moqData.People.RemoveAt(index);
 
                 return new {Status = $"Person with ID {id} was removed"};
             }
@@ -56,9 +63,9 @@ namespace AppMongoDB.Controllers
         {
             var namesList = new List<string>();
 
-            if (MoqDataStore.People.Any())
+            if (_moqData.People.Any())
             {
-                foreach (var person in MoqDataStore.People)
+                foreach (var person in _moqData.People)
                 {
                     namesList.Add(person.FirstName);
                 }
@@ -73,9 +80,9 @@ namespace AppMongoDB.Controllers
         {
             var namesList = new List<string>();
 
-            if (MoqDataStore.People.Any())
+            if (_moqData.People.Any())
             {
-                foreach (var person in MoqDataStore.People)
+                foreach (var person in _moqData.People)
                 {
                     namesList.Add(person.LastName);
                 }
@@ -90,9 +97,9 @@ namespace AppMongoDB.Controllers
         {
             var ageList = new List<Person>();
 
-            if (MoqDataStore.People.Any())
+            if (_moqData.People.Any())
             {
-                var people = MoqDataStore.People.Where(x => x.Age == age);
+                var people = _moqData.People.Where(x => x.Age == age);
                 ageList.AddRange(people);
             }
 
