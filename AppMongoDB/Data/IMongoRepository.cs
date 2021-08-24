@@ -10,7 +10,7 @@ namespace AppMongoDB.Data
 {
     public interface IMongoRepository<T> where T : class
     {
-        Task<IList<T>> GetAllData();
+        Task<IList<T>> GetAllData(int limit, int skip);
 
         Task<T> GetByObjectId(string objId);
 

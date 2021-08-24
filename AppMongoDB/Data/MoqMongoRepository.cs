@@ -75,7 +75,7 @@ namespace AppMongoDB.Data
                 });
         }
 
-        public async Task<IList<Movie>> GetAllData()
+        public async Task<IList<Movie>> GetAllData(int limit, int skip)
         {
             var task = Task.Run(() => MoqData);
             await Task.CompletedTask;

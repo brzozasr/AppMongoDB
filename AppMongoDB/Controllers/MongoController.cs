@@ -24,11 +24,25 @@ namespace AppMongoDB.Controllers
         }
 
         // GET api/<controller>
-        public async Task<IEnumerable<Movie>> Get()
+        public async Task<IEnumerable<Movie>> Get(int limit = 50, int skip = 0)
         {
             try
             {
-                var movieCollection = await _mongoRepository.GetAllData();
+                int vLimit;
+                int vSkip;
+
+                if (limit > 0 && skip >= 0)
+                {
+                    vLimit = limit;
+                    vSkip = skip;
+                }
+                else
+                {
+                    vLimit = 50;
+                    vSkip = 0;
+                }
+
+                var movieCollection = await _mongoRepository.GetAllData(vLimit, vSkip);
                 return movieCollection;
             }
             catch (Exception e)
@@ -71,7 +85,7 @@ namespace AppMongoDB.Controllers
 
         [HttpGet]
         [Route("api/Mongo/GetManyByText/{searchedText}")]
-        public async Task<IEnumerable<Movie>> GetManyByText(string searchedText)
+        public async Task<IEnumerable<Movie>> GetManyByText([FromUri] string searchedText)
         {
             try
             {

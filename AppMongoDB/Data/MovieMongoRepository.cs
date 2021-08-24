@@ -14,10 +14,6 @@ namespace AppMongoDB.Data
     {
         private IMongoCollection<Movie> _movieCollection;
 
-        //public MovieMongoRepository()
-        //{
-        //}
-
         public MovieMongoRepository(IMongoDbManager mongoDbManager)
         {
             var client = mongoDbManager.GetMongoDbClient();
@@ -25,9 +21,9 @@ namespace AppMongoDB.Data
             _movieCollection = database.GetCollection<Movie>("movies");
         }
 
-        public async Task<IList<Movie>> GetAllData()
+        public async Task<IList<Movie>> GetAllData(int limit, int skip)
         {
-            return await (await _movieCollection.FindAsync(_ => true)).ToListAsync();
+            return await _movieCollection.Find(_ => true).Limit(limit).Skip(skip).ToListAsync();
             //return new List<Movie> {new Movie {MovieId = ObjectId.GenerateNewId()}};
         }
 
