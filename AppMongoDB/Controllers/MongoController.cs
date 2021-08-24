@@ -84,14 +84,19 @@ namespace AppMongoDB.Controllers
 
         }
 
-        [HttpGet]
-        [Route("api/Mongo/GetManyByText/{searchedText}")]
-        public async Task<IEnumerable<Movie>> GetManyByText(string searchedText)
+        [HttpPost]
+        [Route("api/Mongo/GetManyByText/")]
+        public async Task<IEnumerable<Movie>> GetManyByText([FromBody] SearchText text)
         {
             try
             {
-                var movie = await _mongoRepository.GetManyByText(searchedText);
-                return movie;
+                if (text != null)
+                {
+                    var movie = await _mongoRepository.GetManyByText(text.Text);
+                    return movie;
+                }
+
+                return null;
             }
             catch (Exception e)
             {
@@ -130,7 +135,13 @@ namespace AppMongoDB.Controllers
         {
             try
             {
-                return await _mongoRepository.DeleteManyConsistValue(text.Text);
+                if (text != null)
+                {
+                    return await _mongoRepository.DeleteManyConsistValue(text.Text);
+                }
+
+                return 0;
+
             }
             catch (Exception e)
             {

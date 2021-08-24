@@ -57,7 +57,7 @@ namespace AppMongoDB.Data
         {
             if (!string.IsNullOrEmpty(searchedText))
             {
-                var filter = Builders<Movie>.Filter.Text(searchedText);
+                var filter = Builders<Movie>.Filter.Text('"' + searchedText + '"');
                 var result = await (await _movieCollection.FindAsync(filter)).ToListAsync();
 
 
