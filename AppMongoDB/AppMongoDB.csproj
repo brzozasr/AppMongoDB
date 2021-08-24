@@ -315,6 +315,7 @@
     <Compile Include="Models\Movie\Awards.cs" />
     <Compile Include="Models\Movie\Movie.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\SearchText.cs" />
     <Compile Include="MongoDbContext\IMongoDbManager.cs" />
     <Compile Include="MongoDbContext\IAppSettingsJsonValue.cs" />
     <Compile Include="MongoDbContext\AppSettingsJsonValue.cs" />

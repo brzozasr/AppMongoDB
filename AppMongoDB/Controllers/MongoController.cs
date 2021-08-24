@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AppMongoDB.Data;
+using AppMongoDB.Models;
 using AppMongoDB.Models.Movie;
 using AppMongoDB.MongoDbContext;
 using MongoDB.Bson;
@@ -69,7 +70,7 @@ namespace AppMongoDB.Controllers
 
         [HttpGet]
         [Route("api/Mongo/GetManyByFieldWithInt/{fieldName}/{fieldValue}")]
-        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
+        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int? fieldValue = null)
         {
             try
             {
@@ -85,7 +86,7 @@ namespace AppMongoDB.Controllers
 
         [HttpGet]
         [Route("api/Mongo/GetManyByText/{searchedText}")]
-        public async Task<IEnumerable<Movie>> GetManyByText([FromUri] string searchedText)
+        public async Task<IEnumerable<Movie>> GetManyByText(string searchedText)
         {
             try
             {
@@ -109,9 +110,32 @@ namespace AppMongoDB.Controllers
         {
         }
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("api/Mongo/DelByObjectId/{objId}")]
+        public async Task<bool> ByObjectId(string objId)
         {
+            try
+            {
+                return await _mongoRepository.DeleteById(objId);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/Mongo/DeleteManyConsistValue/")]
+        public async Task<long> DeleteManyConsistValued([FromBody] SearchText text)
+        {
+            try
+            {
+                return await _mongoRepository.DeleteManyConsistValue(text.Text);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
         }
     }
 }

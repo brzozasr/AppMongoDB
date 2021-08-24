@@ -87,7 +87,7 @@ namespace AppMongoDB.Data
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
+        public Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int? fieldValue)
         {
             throw new NotImplementedException();
         }
@@ -97,12 +97,12 @@ namespace AppMongoDB.Data
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteById(long id)
+        public Task<bool> DeleteById(string objId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteByValue<T3>(string fieldName, T3 fieldValue)
+        public Task<long> DeleteManyConsistValue(string fieldValue)
         {
             throw new NotImplementedException();
         }

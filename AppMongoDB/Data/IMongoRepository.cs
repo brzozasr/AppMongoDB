@@ -14,13 +14,13 @@ namespace AppMongoDB.Data
 
         Task<T> GetByObjectId(string objId);
 
-        Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue);
+        Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int? fieldValue);
         
         Task<IEnumerable<Movie>> GetManyByText(string searchedText);
 
-        Task<bool> DeleteById(long id);
+        Task<bool> DeleteById(string objId);
 
-        Task<bool> DeleteByValue<T3>(string fieldName, T3 fieldValue);
+        Task<long> DeleteManyConsistValue(string fieldValue);
 
         Task<bool> InsertDoc(T document);
 
