@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AppMongoDB.Models.Movie;
 using AppMongoDB.MongoDbContext;
@@ -40,15 +41,33 @@ namespace AppMongoDB.Data
             return null;
         }
 
-        public async Task<Movie> GetOneByValue(string fieldName, dynamic fieldValue)
+        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
         {
-            if (!string.IsNullOrEmpty(fieldName) && fieldValue)
+            if (!string.IsNullOrEmpty(fieldName) && fieldValue > 0)
             {
-                //var filter = new BsonDocument { { fieldName, fieldValue } };
-                //return await (await _movieCollection.FindAsync(filter)).FirstOrDefaultAsync();
-                var builder = Builders<Movie>.Filter;
-                var query = builder.Eq(fieldName, fieldValue);
-                return await (await _movieCollection.FindAsync<Movie>(query)).FirstOrDefaultAsync();
+                var filter = new BsonDocument (fieldName, fieldValue);
+                var result = await (await _movieCollection.FindAsync(filter)).ToListAsync();
+
+                if (result != null && result.Any())
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<Movie>> GetManyByText(string searchedText)
+        {
+            if (!string.IsNullOrEmpty(searchedText))
+            {
+                var filter = Builders<Movie>.Filter.Text(searchedText);
+                var result = await (await _movieCollection.FindAsync(filter)).ToListAsync();
+
+                if (result != null && result.Any())
+                {
+                    return result;
+                }
             }
 
             return null;

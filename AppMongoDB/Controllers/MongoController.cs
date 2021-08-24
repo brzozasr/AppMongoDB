@@ -54,12 +54,28 @@ namespace AppMongoDB.Controllers
         }
 
         [HttpGet]
-        [Route("api/Mongo/GetOneByValue/{fieldName}/{fieldValue}")]
-        public async Task<Movie> GetOneByValue(string fieldName, dynamic fieldValue)
+        [Route("api/Mongo/GetManyByFieldWithInt/{fieldName}/{fieldValue}")]
+        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
         {
             try
             {
-                var movie = await _mongoRepository.GetOneByValue(fieldName, fieldValue);
+                var movie = await _mongoRepository.GetManyByFieldWithInt(fieldName, fieldValue);
+                return movie;
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("api/Mongo/GetManyByText/{searchedText}")]
+        public async Task<IEnumerable<Movie>> GetManyByText(string searchedText)
+        {
+            try
+            {
+                var movie = await _mongoRepository.GetManyByText(searchedText);
                 return movie;
             }
             catch (Exception e)

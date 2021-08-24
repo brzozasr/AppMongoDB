@@ -87,7 +87,12 @@ namespace AppMongoDB.Data
             throw new NotImplementedException();
         }
 
-        public Task<Movie> GetOneByValue(string fieldName, dynamic fieldValue)
+        public Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Movie>> GetManyByText(string searchedText)
         {
             throw new NotImplementedException();
         }
