@@ -37,9 +37,9 @@ namespace AppMongoDB.Data
             return null;
         }
 
-        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int fieldValue)
+        public async Task<IEnumerable<Movie>> GetManyByFieldWithInt(string fieldName, int? fieldValue)
         {
-            if (!string.IsNullOrEmpty(fieldName) && fieldValue > 0)
+            if (!string.IsNullOrEmpty(fieldName) && fieldValue != null)
             {
                 var filter = new BsonDocument (fieldName, fieldValue);
                 var result = await (await _movieCollection.FindAsync(filter)).ToListAsync();
@@ -57,8 +57,9 @@ namespace AppMongoDB.Data
         {
             if (!string.IsNullOrEmpty(searchedText))
             {
-                var filter = Builders<Movie>.Filter.Text(searchedText);
+                var filter = Builders<Movie>.Filter.Text('"' + searchedText + '"');
                 var result = await (await _movieCollection.FindAsync(filter)).ToListAsync();
+
 
                 if (result != null && result.Any())
                 {
@@ -69,14 +70,37 @@ namespace AppMongoDB.Data
             return null;
         }
 
-        public Task<bool> DeleteById(long id)
+        public async Task<bool> DeleteById(string objId)
         {
-            throw new NotImplementedException();
+            if (ObjectId.TryParse(objId, out var objectId))
+            {
+                var result = await _movieCollection.DeleteOneAsync(x => x.MovieId == objectId);
+
+                if (result.IsAcknowledged && result.DeletedCount > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        public Task<bool> DeleteByValue<T3>(string fieldName, T3 fieldValue)
+        public async Task<long> DeleteManyConsistValue(string fieldValue)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(fieldValue) && fieldValue.Length > 4)
+            {
+                var filter = Builders<Movie>.Filter.Text('"' + fieldValue + '"');
+               
+                var countDel = await _movieCollection.DeleteManyAsync(filter);
+
+                if (countDel.IsAcknowledged && countDel.DeletedCount > 0)
+                {
+                    return countDel.DeletedCount;
+                }
+              
+            }
+
+            return 0;
         }
 
         public Task<bool> InsertDoc(Movie document)
