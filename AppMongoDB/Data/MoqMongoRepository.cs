@@ -107,12 +107,17 @@ namespace AppMongoDB.Data
             throw new NotImplementedException();
         }
 
-        public Task<bool> InsertDoc(Movie document)
+        public Task<bool> InsertOneDoc(Movie document)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateDoc<T4>(Movie document, Dictionary<string, T4> values)
+        public Task<long> InsertManyDocs(ICollection<Movie> documents)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateDoc(string objId, Movie document)
         {
             throw new NotImplementedException();
         }

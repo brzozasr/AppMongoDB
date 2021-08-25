@@ -22,9 +22,11 @@ namespace AppMongoDB.Data
 
         Task<long> DeleteManyConsistValue(string fieldValue);
 
-        Task<bool> InsertDoc(T document);
+        Task<bool> InsertOneDoc(T document);
 
-        Task<bool> UpdateDoc<T4>(T document, Dictionary<string, T4> values);
+        Task<long> InsertManyDocs(ICollection<Movie> documents);
+
+        Task<bool> UpdateDoc(string objId, T document);
     }
     
 }

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppMongoDB.Models;
 using AppMongoDB.Models.Movie;
 using AppMongoDB.MongoDbContext;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Unity;
+using WebGrease.Css.Extensions;
 
 namespace AppMongoDB.Data
 {
@@ -30,7 +32,7 @@ namespace AppMongoDB.Data
         public async Task<Movie> GetByObjectId(string objId)
         {
             if (ObjectId.TryParse(objId, out var objectId))
-            {
+            { 
                 return await (await _movieCollection.FindAsync(x => x.MovieId == objectId)).FirstOrDefaultAsync();
             }
 
@@ -103,14 +105,48 @@ namespace AppMongoDB.Data
             return 0;
         }
 
-        public Task<bool> InsertDoc(Movie document)
+        public async Task<bool> InsertOneDoc(Movie document)
         {
-            throw new NotImplementedException();
+            if (document != null)
+            {
+                var objId = document.MovieId = ObjectId.GenerateNewId();
+
+                await _movieCollection.InsertOneAsync(document);
+
+                var isAdded = await (await _movieCollection.FindAsync(x => x.MovieId == objId)).AnyAsync();
+
+                if (isAdded)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        public Task<bool> UpdateDoc<T4>(Movie document, Dictionary<string, T4> values)
+        public async Task<long> InsertManyDocs(ICollection<Movie> documents)
         {
-            throw new NotImplementedException();
+            if (documents != null && documents.Any())
+            {
+                var collectionCounterBefore = await _movieCollection.CountDocumentsAsync(_ => true );
+                var docsLength = documents.Count;
+                await _movieCollection.InsertManyAsync(documents);
+                var collectionCounterAfter = await _movieCollection.CountDocumentsAsync(_ => true);
+
+                return collectionCounterAfter + docsLength == collectionCounterAfter ? docsLength : collectionCounterAfter - collectionCounterBefore;
+            }
+
+            return 0;
+        }
+
+        public async Task<bool> UpdateDoc(string objId, Movie document)
+        {
+            // TODO
+
+            var filter = Builders<Movie>.Filter.Eq("title", "Just Curious");
+            var update = Builders<Movie>.Update.Set("year", 2020);
+            var record = _movieCollection.FindOneAndUpdate(filter, update);
+            return true;
         }
     }
 }
