@@ -24,7 +24,7 @@ namespace AppMongoDB.Data
                     Description = "A tipsy doctor encounters his patient sleepwalking on a building ledge, high above the street.",
                     FullDescription = "After a long wait, a young doctor finally has a patient come to his office. She is a young woman whose father has brought her to be treated for sleep-walking, but the father becomes annoyed with the doctor, and takes his daughter away. Soon afterward, the young doctor shares in a drinking binge with another doctor who has built a still in his office. After a series of misadventures, the two of them wind up in the same hotel where the daughter and her father are staying, leading to some hazardous predicaments.",
                     Released = new DateTime(rnd.Next(1950, 2021), rnd.Next(1, 13), rnd.Next(1, 29)),
-                    Year = rnd.Next(1950, 2021),
+                    Year = rnd.Next(1950, 2021).ToString(),
                     PosterUrl = "https://m.media-amazon.com/images/M/MV5BODliMjc3ODctYjhlOC00MDM5LTgzNmUtMjQ1MmViNDQ0NzlhXkEyXkFqcGdeQXVyNTM3MDMyMDQ@._V1_SY1000_SX677_AL_.jpg",
                     Type = "movie",
                     Genres = new List<string> { "Comedy", "Short" },
@@ -43,7 +43,7 @@ namespace AppMongoDB.Data
                     Description = "A meek Belgian soldier (Harry Langdon) fighting in World War I receives penpal letters and a photo from \"Mary Brown\", an American girl he has never met. He becomes infatuated with her by ...",
                     FullDescription = "A meek Belgian soldier (Harry Langdon) fighting in World War I receives penpal letters and a photo from \"Mary Brown\", an American girl he has never met. He becomes infatuated with her by long distance. After the war, the young Belgian journeys to America as assistant to a theatrical \"strong man\", Zandow the Great (Arthur Thalasso). While in America, he searches for Mary Brown... and he finds her, just as word comes that Zandow is incapacitated and the little nebbish must go on stage in his place.",
                     Released = new DateTime(rnd.Next(1950, 2021), rnd.Next(1, 13), rnd.Next(1, 29)),
-                    Year = rnd.Next(1950, 2021),
+                    Year = rnd.Next(1950, 2021).ToString(),
                     PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTYyMjE0OTQ2NF5BMl5BanBnXkFtZTcwNTUxMDIzMQ@@._V1_SY1000_SX677_AL_.jpg",
                     Type = "movie",
                     Genres = new List<string> { "Comedy", "Drama" },
@@ -62,7 +62,7 @@ namespace AppMongoDB.Data
                     Description = "A married farmer falls under the spell of a slatternly woma\n from the city, who tries to convince him to drown his wife.",
                     FullDescription = "In this fable-morality subtitled \"A Song of Two Humans\", the \"evil\" temptress is a city woman who bewitches farmer Anses and tries to convince him to murder his neglected wife, Indre.",
                     Released = new DateTime(rnd.Next(1950, 2021), rnd.Next(1, 13), rnd.Next(1, 29)),
-                    Year = rnd.Next(1950, 2021),
+                    Year = rnd.Next(1950, 2021).ToString(),
                     PosterUrl = "https://m.media-amazon.com/images/M/MV5BNDVkYmYwM2ItNzRiMy00NWQ4LTlhMjMtNDI1ZDYyOGVmMzJjXkEyXkFqcGdeQXVyNTgzMzU5MDI@._V1_SY1000_SX677_AL_.jpg",
                     Type = "movie",
                     Genres = new List<string> { "Drama", "Romance" },
@@ -107,12 +107,17 @@ namespace AppMongoDB.Data
             throw new NotImplementedException();
         }
 
-        public Task<bool> InsertDoc(Movie document)
+        public Task<bool> InsertOneDoc(Movie document)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateDoc<T4>(Movie document, Dictionary<string, T4> values)
+        public Task<long> InsertManyDocs(ICollection<Movie> documents)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateOneDoc(string objId, Movie document)
         {
             throw new NotImplementedException();
         }

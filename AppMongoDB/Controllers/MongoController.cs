@@ -105,14 +105,46 @@ namespace AppMongoDB.Controllers
 
         }
 
-        // POST api/<controller>
-        public void Post([FromBody] string value)
+        [HttpPatch]
+        [Route("api/Mongo/InsertOneDoc/")]
+        public async Task<bool> InsertOneDoc([FromBody] Movie movie)
         {
+            try
+            {
+                return await _mongoRepository.InsertOneDoc(movie);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Route("api/Mongo/InsertManyDocs/")]
+        public async Task<long> InsertManyDocs([FromBody] ICollection<Movie> movies)
         {
+            try
+            {
+                return await _mongoRepository.InsertManyDocs(movies);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+        }
+
+        [HttpPatch]
+        [Route("api/Mongo/UpdateOneDoc/{objId}")]
+        public async  Task<bool> UpdateOneDoc(string objId, [FromBody] Movie movie)
+        {
+            try
+            {
+                return await _mongoRepository.UpdateOneDoc(objId, movie);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
         }
 
         [HttpDelete]

@@ -9,10 +9,10 @@ namespace AppMongoDB.Models.Movie
     public class Awards
     {
         [BsonElement("wins")] 
-        public int Wins { get; set; }
+        public int? Wins { get; set; }
 
         [BsonElement("nominations")]
-        public int Nominations { get; set; }
+        public int? Nominations { get; set; }
 
         [BsonElement("text")]
         public string NominationsDescription { get; set; }
