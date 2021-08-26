@@ -105,7 +105,7 @@ namespace AppMongoDB.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("api/Mongo/InsertOneDoc/")]
         public async Task<bool> InsertOneDoc([FromBody] Movie movie)
         {
@@ -133,9 +133,18 @@ namespace AppMongoDB.Controllers
             }
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch]
+        [Route("api/Mongo/UpdateOneDoc/{objId}")]
+        public async  Task<bool> UpdateOneDoc(string objId, [FromBody] Movie movie)
         {
+            try
+            {
+                return await _mongoRepository.UpdateOneDoc(objId, movie);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
         }
 
         [HttpDelete]

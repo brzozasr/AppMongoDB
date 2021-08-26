@@ -22,11 +22,11 @@ namespace AppMongoDB.Models.Movie
         public string FullDescription { get; set; }
 
         [BsonElement("released")]
-        public DateTime Released { get; set; }
+        public DateTime? Released { get; set; }
 
-        // The type dynamic is set due to the wrong data ("Year" is int or string) in MongoDB
+        // The type dynamic or object is set due to the wrong data ("Year" is int or string) in MongoDB
         [BsonElement("year")]
-        public dynamic Year { get; set; }
+        public object Year { get; set; }
 
         [BsonElement("poster")]
         public string PosterUrl { get; set; }

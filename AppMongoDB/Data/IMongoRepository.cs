@@ -26,7 +26,7 @@ namespace AppMongoDB.Data
 
         Task<long> InsertManyDocs(ICollection<Movie> documents);
 
-        Task<bool> UpdateDoc(string objId, T document);
+        Task<bool> UpdateOneDoc(string objId, T document);
     }
     
 }

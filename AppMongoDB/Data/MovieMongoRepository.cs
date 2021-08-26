@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppMongoDB.Models;
 using AppMongoDB.Models.Movie;
 using AppMongoDB.MongoDbContext;
+using Microsoft.Ajax.Utilities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Unity;
@@ -139,14 +140,37 @@ namespace AppMongoDB.Data
             return 0;
         }
 
-        public async Task<bool> UpdateDoc(string objId, Movie document)
+        public async Task<bool> UpdateOneDoc(string objId, Movie document)
         {
-            // TODO
+            var filter = Builders<Movie>.Filter.Eq(x => x.MovieId, ObjectId.Parse(objId));
 
-            var filter = Builders<Movie>.Filter.Eq("title", "Just Curious");
-            var update = Builders<Movie>.Update.Set("year", 2020);
-            var record = _movieCollection.FindOneAndUpdate(filter, update);
-            return true;
+            var update = Builders<Movie>.Update;
+            var updates = new List<UpdateDefinition<Movie>>();
+
+            updates.Add(update.Set(x => x.Title, document.Title));
+            updates.Add(update.Set(x => x.Description, document.Description));
+            updates.Add(update.Set(x => x.FullDescription, document.FullDescription));
+            updates.Add(update.Set(x => x.Released, document.Released));
+            updates.Add(update.Set(x => x.Year, document.Year));
+            updates.Add(update.Set(x => x.PosterUrl, document.PosterUrl));
+            updates.Add(update.Set(x => x.Type, document.Type));
+            updates.Add(update.Set(x => x.Genres, document.Genres));
+            updates.Add(update.Set(x => x.Cast, document.Cast));
+            updates.Add(update.Set(x => x.Languages, document.Languages));
+            updates.Add(update.Set(x => x.Directors, document.Directors));
+            updates.Add(update.Set(x => x.Writers, document.Writers));
+            updates.Add(update.Set(x => x.Countries, document.Countries));
+            updates.Add(update.Set(x => x.MovieAwards, document.MovieAwards));
+            
+            var record = await _movieCollection.UpdateOneAsync(filter, update.Combine(updates), new UpdateOptions {IsUpsert = true});
+
+            if (record.IsAcknowledged && record.ModifiedCount > 0)
+            {
+                return true;
+            }
+
+            return false;
+
         }
     }
 }
